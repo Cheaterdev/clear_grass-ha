@@ -127,7 +127,6 @@ class AirQualityMonitor(Device):
                 "count (%s) of received values.",
                 properties_count, values_count)
         
-        _LOGGER.error("UPDATED %s", json.dumps(values) )
         return AirQualityMonitorStatus(
             defaultdict(lambda: None, values))
 
@@ -343,7 +342,6 @@ class ClearGlassMonitor(Entity):
         """Fetch state from the miio device."""        
         try:
             state = await self.hass.async_add_executor_job(self._device.status)
-            _LOGGER.error("Got new state: %s", state)
 
             self._available = True
             self._state = state.pm25

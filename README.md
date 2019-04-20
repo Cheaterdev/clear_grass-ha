@@ -32,6 +32,9 @@ sensor:
     
 ```
 
+To retreive TOKEN use this instructions: 
+https://www.home-assistant.io/components/vacuum.xiaomi_miio/#retrieving-the-access-token
+
 ## Disclaimer
 This software is supplied "AS IS" without any warranties and support.
 
