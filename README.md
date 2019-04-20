@@ -25,7 +25,7 @@ Merge custom_components folder
 
 # Same as Xiaomi Air Quality Monitor
 sensor:
-  - platform: xiaomi_miio
+  - platform: clear_glass
     name: Xiaomi ClearGlass Air Detector
     host: 192.168.130.73
     token: YOUR_TOKEN
