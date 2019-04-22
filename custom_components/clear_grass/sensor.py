@@ -219,8 +219,8 @@ from homeassistant.helpers.entity import Entity
 
 _LOGGER = logging.getLogger(__name__)
 
-DEFAULT_NAME = 'clear_glass'
-DATA_KEY = 'sensor.clear_glass'
+DEFAULT_NAME = 'clear_grass'
+DATA_KEY = 'sensor.clear_grass'
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
@@ -264,7 +264,7 @@ async def async_setup_platform(hass, config, async_add_entities,
                      model,
                      device_info.firmware_version,
                      device_info.hardware_version)
-        device = ClearGlassMonitor(
+        device = ClearGrassMonitor(
             name, air_quality_monitor, model, unique_id)
     except DeviceException:
         raise PlatformNotReady
@@ -273,7 +273,7 @@ async def async_setup_platform(hass, config, async_add_entities,
     async_add_entities([device], update_before_add=True)
 
 
-class ClearGlassMonitor(Entity):
+class ClearGrassMonitor(Entity):
     """Representation of a Xiaomi Air Quality Monitor."""
 
     def __init__(self, name, device, model, unique_id):

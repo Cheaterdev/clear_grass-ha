@@ -1,5 +1,5 @@
-# clear_glass-ha
-Xiaomi ClearGlass Air Detector integration into HA
+# clear_grass-ha
+Xiaomi ClearGrass Air Detector integration into HA
 
 Based on:
 https://github.com/rytilahti/python-miio/blob/master/miio/airqualitymonitor.py
@@ -25,8 +25,8 @@ Merge custom_components folder
 
 # Same as Xiaomi Air Quality Monitor
 sensor:
-  - platform: clear_glass
-    name: Xiaomi ClearGlass Air Detector
+  - platform: clear_grass
+    name: Xiaomi ClearGrass Air Detector
     host: 192.168.130.73
     token: YOUR_TOKEN
     
