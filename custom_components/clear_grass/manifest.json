@@ -1,0 +1,8 @@
+{
+  "domain": "clear_grass",
+  "name": "ClearGlass",
+  "documentation": "",
+  "dependencies": [],
+  "codeowners": ["@cheater.dev"],
+  "requirements": []
+}
