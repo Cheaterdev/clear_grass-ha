@@ -1,8 +1,13 @@
 {
   "domain": "clear_grass",
   "name": "ClearGlass",
-  "documentation": "",
+  "documentation": "https://github.com/Cheaterdev/clear_grass-ha",
+  "requirements": [
+    "construct==2.9.45",
+    "python-miio==0.4.5"
+  ],
   "dependencies": [],
-  "codeowners": ["@cheater.dev"],
-  "requirements": []
+  "codeowners": [
+    "@cheater.dev"
+  ]
 }
