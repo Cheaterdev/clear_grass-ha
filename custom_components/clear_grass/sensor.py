@@ -9,11 +9,11 @@ from miio.device import Device, DeviceException
 _LOGGER = logging.getLogger(__name__)
 
 MODEL_AIRQUALITYMONITOR_S1 = 'cgllc.airmonitor.s1'
-AVAILABLE_PROPERTIES_S1 = [ 'battery', 'battery_state', 'co2', 'humidity', 'pm25' , 'temperature', 'tvoc']
+AVAILABLE_PROPERTIES_S1 = [ 'battery', 'battery_state', 'co2', 'humidity', 'pm25' , 'temperature', 'temperature_unit', 'tvoc', 'tvoc_unit']
 
 
 MODEL_AIRQUALITYMONITOR_B1 = 'cgllc.airmonitor.b1'
-AVAILABLE_PROPERTIES_B1 = [ 'co2e', 'humidity', 'pm25' , 'temperature', 'tvoc']
+AVAILABLE_PROPERTIES_B1 = [ 'co2e', 'humidity', 'pm25' , 'temperature', 'tvoc', 'temperature_unit', 'tvoc', 'tvoc_unit']
 
 
 
@@ -50,6 +50,10 @@ class AirQualityMonitorStatus:
         return self.data["temperature"] 
 
     @property
+    def temperature_unit(self) -> bool:
+        return self.data["temperature_unit"] 
+
+    @property
     def humidity(self) -> int:
         return self.data["humidity"]
 
@@ -62,6 +66,11 @@ class AirQualityMonitorStatus:
     @property
     def tvoc(self) -> int:
         return self.data["tvoc"]
+
+    @property
+    def tvoc_unit(self) -> int:
+        return self.data["tvoc_unit"]
+
 
     @property
     def pm25(self) -> bool:
@@ -81,14 +90,20 @@ class AirQualityMonitorStatus:
 
     def __repr__(self) -> str:
         s = "<AirQualityMonitorStatus humidity=%s, " \
+            "temperature=%s, " \
+            "temperature_unit=%s, " \
             "co2=%s, " \
             "tvoc=%s, " \
+            "tvoc_unit=%s, " \
             "pm25=%s, " \
             "battery=%s, " \
             "battery_state=%s>" % \
             (self.humidity,
+             self.temperature,
+             self.temperature_unit,
              self.co2,
              self.tvoc,
+             self.tvoc_unit,
              self.pm25,
              self.battery,
              self.battery_state,
@@ -230,18 +245,22 @@ _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = 'clear_grass'
 DATA_KEY = 'sensor.clear_grass'
+CONF_MODEL = 'model'
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Required(CONF_TOKEN): vol.All(cv.string, vol.Length(min=32, max=32)),
-    vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+    vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string, 
+    vol.Optional(CONF_MODEL, default=MODEL_AIRQUALITYMONITOR_S1): cv.string,
 })
 
 
 ATTR_TEMPERATURE = 'temperature'
+ATTR_TEMPERATURE_UNIT = 'temperature_unit'
 ATTR_HUMIDITY = 'humidity'
 ATTR_CO2 = 'co2'
 ATTR_TVOC = 'tvoc'
+ATTR_TVOC_UNIT = 'tvoc_unit'
 ATTR_PM25 = 'pm25'
 
 ATTR_BATTERY_LEVEL = 'battery_level'
@@ -265,7 +284,7 @@ async def async_setup_platform(hass, config, async_add_entities,
     _LOGGER.info("Initializing with host %s (token %s...)", host, token[:5])
 
     try:
-        air_quality_monitor = AirQualityMonitor(host, token)
+        air_quality_monitor = AirQualityMonitor(host, token, model = config.get(CONF_MODEL))
         device_info = air_quality_monitor.info()
         model = device_info.model
         unique_id = "{}-{}".format(model, device_info.mac_address)
@@ -298,9 +317,11 @@ class ClearGrassMonitor(Entity):
         self._state = None
         self._state_attrs = {
             ATTR_TEMPERATURE: None,
+            ATTR_TEMPERATURE_UNIT: None,
             ATTR_HUMIDITY: None,
             ATTR_CO2: None,
             ATTR_TVOC: None,
+            ATTR_TVOC_UNIT: None,
             #ATTR_PM25: None,
             ATTR_BATTERY_LEVEL: None,
             ATTR_BATTERY_STATE: None,
@@ -356,9 +377,11 @@ class ClearGrassMonitor(Entity):
             self._state = state.pm25
             self._state_attrs.update({
                 ATTR_TEMPERATURE: state.temperature,
+                ATTR_TEMPERATURE_UNIT: state.temperature_unit,
                 ATTR_HUMIDITY: state.humidity,
                 ATTR_CO2: state.co2,
                 ATTR_TVOC: state.tvoc,
+                ATTR_TVOC_UNIT: state.tvoc_unit,
               #  ATTR_PM25:state.pm25,
                 ATTR_BATTERY_LEVEL:state.battery,
                 ATTR_BATTERY_STATE:state.battery_state,
