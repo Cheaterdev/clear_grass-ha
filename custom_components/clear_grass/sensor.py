@@ -9,11 +9,22 @@ from miio.device import Device, DeviceException
 _LOGGER = logging.getLogger(__name__)
 
 MODEL_AIRQUALITYMONITOR_S1 = 'cgllc.airmonitor.s1'
+AVAILABLE_PROPERTIES_S1 = [ 'battery', 'battery_state', 'co2', 'humidity', 'pm25' , 'temperature', 'tvoc']
 
-AVAILABLE_PROPERTIES_COMMON = [ 'battery', 'battery_state', 'co2', 'humidity', 'pm25' , 'temperature', 'tvoc']
+
+MODEL_AIRQUALITYMONITOR_B1 = 'cgllc.airmonitor.b1'
+AVAILABLE_PROPERTIES_B1 = [ 'co2e', 'humidity', 'pm25' , 'temperature', 'tvoc']
+
+
 
 AVAILABLE_PROPERTIES = {
-    MODEL_AIRQUALITYMONITOR_S1: AVAILABLE_PROPERTIES_COMMON,
+    MODEL_AIRQUALITYMONITOR_S1: AVAILABLE_PROPERTIES_S1,
+    MODEL_AIRQUALITYMONITOR_B1: AVAILABLE_PROPERTIES_B1
+}
+
+FUNC_PROPERTIES = {
+    MODEL_AIRQUALITYMONITOR_S1: "get_prop",
+    MODEL_AIRQUALITYMONITOR_B1: "get_air_data"
 }
 
 class AirQualityMonitorException(DeviceException):
@@ -28,47 +39,44 @@ class AirQualityMonitorStatus:
 
     @property
     def power(self) -> str:
-        """Current power state."""
         return self.data["power"]
 
     @property
     def is_on(self) -> bool:
-        """Return True if the device is turned on."""
         return self.power == "on"
 
     @property
     def temperature(self) -> bool:
-        """Return True if the device's usb is on."""
         return self.data["temperature"] 
 
     @property
     def humidity(self) -> int:
-        """Air quality index value. (0...600)."""
         return self.data["humidity"]
 
     @property
-    def co2(self) -> int:
-        """Air quality index value. (0...600)."""
-        return self.data["co2"]
+    def co2(self) -> int:	
+        if "co2" in self.data:
+            return self.data["co2"]
+        return self.data["co2e"]
 
     @property
     def tvoc(self) -> int:
-        """Current battery level (0...100)."""
         return self.data["tvoc"]
 
     @property
     def pm25(self) -> bool:
-        """Display a clock instead the AQI."""
         return self.data["pm25"]
 
     @property
     def battery(self) -> bool:
-        """Return True if the night mode is on."""
+        if "battery" not in self.data:
+            return "0"
         return self.data["battery"]
 
     @property
     def battery_state(self) -> str:
-        """Return the begin of the night time."""
+        if "battery_state" not in self.data:
+            return "0"
         return self.data["battery_state"]
 
     def __repr__(self) -> str:
@@ -113,9 +121,10 @@ class AirQualityMonitor(Device):
         """Return device status."""
 
         properties = AVAILABLE_PROPERTIES[self.model]
+        func = FUNC_PROPERTIES[self.model]
 
         values = self.send(
-            "get_prop",
+            func,
             properties
         )
 
