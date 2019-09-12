@@ -13,7 +13,7 @@ AVAILABLE_PROPERTIES_S1 = [ 'battery', 'battery_state', 'co2', 'humidity', 'pm25
 
 
 MODEL_AIRQUALITYMONITOR_B1 = 'cgllc.airmonitor.b1'
-AVAILABLE_PROPERTIES_B1 = [ 'co2e', 'humidity', 'pm25' , 'temperature', 'tvoc', 'temperature_unit', 'tvoc', 'tvoc_unit']
+AVAILABLE_PROPERTIES_B1 = [ 'co2e', 'humidity', 'pm25' , 'temperature', 'temperature_unit', 'tvoc', 'tvoc_unit']
 
 
 
