@@ -4,7 +4,7 @@ from collections import defaultdict
 import click
 import json
 from miio.click_common import command, format_output
-from miio.device import Device, DeviceException
+from miio.device import Device
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -15,10 +15,6 @@ AVAILABLE_PROPERTIES_COMMON = [ 'battery', 'battery_state', 'co2', 'humidity', '
 AVAILABLE_PROPERTIES = {
     MODEL_AIRQUALITYMONITOR_S1: AVAILABLE_PROPERTIES_COMMON,
 }
-
-class AirQualityMonitorException(DeviceException):
-    pass
-
 
 class AirQualityMonitorStatus:
     """Container of air quality monitor status."""
@@ -201,7 +197,7 @@ class AirQualityMonitor(Device):
         end = end_hour * 3600 + end_minute * 60
 
         if begin < 0 or begin > 86399 or end < 0 or end > 86399:
-            AirQualityMonitorException("Begin or/and end time invalid.")
+            raise Exception("Begin or/and end time invalid.")
 
         self.send("set_night_time", [begin, end])
 
@@ -266,7 +262,7 @@ async def async_setup_platform(hass, config, async_add_entities,
                      device_info.hardware_version)
         device = ClearGrassMonitor(
             name, air_quality_monitor, model, unique_id)
-    except DeviceException:
+    except Exception:
         raise PlatformNotReady
 
     hass.data[DATA_KEY][host] = device
