@@ -1,6 +1,7 @@
 {
   "domain": "clear_grass",
   "name": "ClearGlass",
+  "version": "0.0.1",
   "documentation": "https://github.com/Cheaterdev/clear_grass-ha",
   "requirements": [
     "construct==2.9.45",
