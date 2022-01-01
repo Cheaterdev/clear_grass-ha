@@ -92,9 +92,8 @@ class AirQualityMonitor(Device):
     def __init__(self, ip: str = None, token: str = None, start_id: int = 0,
                  debug: int = 0, lazy_discover: bool = True,
                  model: str = MODEL_AIRQUALITYMONITOR_S1) -> None:
-        super().__init__(ip, token, start_id, debug, lazy_discover)
+        super().__init__(ip, token, start_id, debug, lazy_discover, model=model)
 
-        self.model = model
         if model not in AVAILABLE_PROPERTIES:
             _LOGGER.error("Device model %s unsupported. Falling back to %s.", model, self.model)
 
@@ -330,7 +329,7 @@ class ClearGrassMonitor(Entity):
         return self._state
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Return the state attributes of the device."""
         return self._state_attrs
 
