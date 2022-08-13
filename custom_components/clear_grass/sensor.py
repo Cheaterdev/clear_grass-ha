@@ -10,7 +10,7 @@ _LOGGER = logging.getLogger(__name__)
 
 MODEL_AIRQUALITYMONITOR_S1 = 'cgllc.airmonitor.s1'
 
-AVAILABLE_PROPERTIES_COMMON = [ 'battery', 'battery_state', 'co2', 'humidity', 'pm25' , 'temperature', 'tvoc']
+AVAILABLE_PROPERTIES_COMMON = [ 'battery_state', 'co2', 'humidity', 'pm25' , 'temperature', 'tvoc']
 
 AVAILABLE_PROPERTIES = {
     MODEL_AIRQUALITYMONITOR_S1: AVAILABLE_PROPERTIES_COMMON,
@@ -72,13 +72,13 @@ class AirQualityMonitorStatus:
             "co2=%s, " \
             "tvoc=%s, " \
             "pm25=%s, " \
-            "battery=%s, " \
+ #           "battery=%s, " \
             "battery_state=%s>" % \
             (self.humidity,
              self.co2,
              self.tvoc,
              self.pm25,
-             self.battery,
+#             self.battery,
              self.battery_state,
              )
         return s
@@ -288,7 +288,7 @@ class ClearGrassMonitor(Entity):
             ATTR_CO2: None,
             ATTR_TVOC: None,
             #ATTR_PM25: None,
-            ATTR_BATTERY_LEVEL: None,
+            #ATTR_BATTERY_LEVEL: None,
             ATTR_BATTERY_STATE: None,
             ATTR_MODEL: self._model,
         }
@@ -346,7 +346,7 @@ class ClearGrassMonitor(Entity):
                 ATTR_CO2: state.co2,
                 ATTR_TVOC: state.tvoc,
               #  ATTR_PM25:state.pm25,
-                ATTR_BATTERY_LEVEL:state.battery,
+              #  ATTR_BATTERY_LEVEL:state.battery,
                 ATTR_BATTERY_STATE:state.battery_state,
             })
 
